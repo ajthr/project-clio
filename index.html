@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moments / സ്നേഹിതം Magazine Studio</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        playfair: ['Playfair Display', 'serif'],
+                        montserrat: ['Montserrat', 'sans-serif'],
+                        dancing: ['Dancing Script', 'cursive'],
+                        cinzel: ['Cinzel', 'serif'],
+                        lora: ['Lora', 'serif'],
+                        anek: ['Anek Malayalam', 'sans-serif'],
+                        notoserif: ['Noto Serif Malayalam', 'serif'],
+                        manjari: ['Manjari', 'sans-serif']
+                    },
+                    colors: {
+                        studio: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anek+Malayalam:wght@300;400;600;700&family=Cinzel:wght@400;600;700&family=Dancing+Script:wght@500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Manjari:wght@400;700&family=Montserrat:wght@300;400;500;600;700&family=Noto+Serif+Malayalam:wght@400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* A4 Page Ratio Rules */
+        .page-a4 {
+            width: 210mm;
+            min-height: 297mm;
+            height: 297mm;
+            position: relative;
+            background-color: #ffffff;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Scale container for responsive viewport fitting */
+        .page-wrapper {
+            transform-origin: top center;
+        }
+
+        /* Ripped Paper Texture Effect */
+        .ripped-header {
+            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+            clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 95% 98%, 90% 90%, 85% 96%, 80% 89%, 75% 97%, 70% 91%, 65% 98%, 60% 89%, 55% 97%, 50% 90%, 45% 98%, 40% 90%, 35% 96%, 30% 89%, 25% 97%, 20% 91%, 15% 98%, 10% 89%, 5% 97%, 0% 90%);
+        }
+
+        /* Spine Crease / Fold Shadow Effect */
+        .spine-shadow-left {
+            background: linear-gradient(to right, rgba(0,0,0,0) 90%, rgba(0,0,0,0.18) 98%, rgba(0,0,0,0.3) 100%);
+        }
+        .spine-shadow-right {
+            background: linear-gradient(to left, rgba(0,0,0,0) 90%, rgba(0,0,0,0.18) 98%, rgba(0,0,0,0.3) 100%);
+        }
+
+        /* Polaroid Tape */
+        .washi-tape {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            border-left: 2px dashed rgba(0,0,0,0.1);
+            border-right: 2px dashed rgba(0,0,0,0.1);
+        }
+
+        /* Smooth page flip animation */
+        .page-turn-enter {
+            animation: fadeInFlip 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInFlip {
+            from {
+                opacity: 0.3;
+                transform: scale(0.97) translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Themes */
+        .theme-classic { --page-bg: #ffffff; --text-main: #1e293b; --accent: #991b1b; }
+        .theme-autumn { --page-bg: #fdfbf7; --text-main: #451a03; --accent: #c2410c; }
+        .theme-pastel { --page-bg: #fdf2f8; --text-main: #831843; --accent: #be185d; }
+        .theme-ocean { --page-bg: #f0f9ff; --text-main: #0c4a6e; --accent: #0284c7; }
+        .theme-noir { --page-bg: #18181b; --text-main: #f4f4f5; --accent: #e4e4e7; }
+
+        .theme-noir .page-a4 { background-color: #18181b; color: #f4f4f5; }
+        .theme-autumn .page-a4 { background-color: #fdfbf7; color: #451a03; }
+        .theme-pastel .page-a4 { background-color: #fdf2f8; color: #831843; }
+        .theme-ocean .page-a4 { background-color: #f0f9ff; color: #0c4a6e; }
+
+        /* Printable styles */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-area {
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+            }
+            .page-a4 {
+                box-shadow: none !important;
+                margin: 0 !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                width: 210mm !important;
+                height: 297mm !important;
+            }
+            .booklet-sheet {
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                width: 420mm !important;
+                height: 297mm !important;
+                display: flex !important;
+                flex-direction: row !important;
+            }
+        }
+
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-montserrat overflow-hidden select-none bg-slate-950">
+
+    <!-- Navigation Header -->
+    <header class="no-print bg-slate-900 border-b border-slate-800 px-4 py-2.5 flex items-center justify-between z-30 shrink-0 shadow-lg">
+        <div class="flex items-center space-x-3">
+            <div class="bg-gradient-to-tr from-rose-600 to-amber-500 w-10 h-10 rounded-xl flex items-center justify-center shadow-md">
+                <i class="fa-solid font-bold text-white text-lg fa-book-open"></i>
+            </div>
+            <div>
+                <h1 class="font-playfair font-bold text-lg leading-tight text-white flex items-center gap-2">
+                    <span id="app-title-text">MOMENTS</span>
+                    <span class="text-xs bg-rose-500/20 text-rose-300 border border-rose-500/30 px-2 py-0.5 rounded-full font-sans font-normal">Studio Pro</span>
+                </h1>
+                <p class="text-xs text-slate-400" id="app-subtitle-text">A4 Magazine & Booklet Studio • സ്നേഹിതം</p>
+            </div>
+        </div>
+
+        <!-- Mode Switcher Buttons -->
+        <div class="hidden lg:flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800">
+            <button onclick="switchViewMode('grid')" id="btn-mode-grid" class="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all text-slate-400 hover:text-white">
+                <i class="fa-solid fa-border-all text-sm"></i>
+                <span>Studio Grid View</span>
+            </button>
+            <button onclick="switchViewMode('reader')" id="btn-mode-reader" class="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all bg-rose-600 text-white shadow-md">
+                <i class="fa-solid fa-book-open-reader text-sm"></i>
+                <span>Magazine Reader</span>
+            </button>
+            <button onclick="switchViewMode('booklet')" id="btn-mode-booklet" class="px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all text-slate-400 hover:text-white">
+                <i class="fa-solid fa-print text-sm"></i>
+                <span>Booklet Fold (Printer Mode)</span>
+            </button>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="flex items-center space-x-2">
+            <!-- Language Switcher -->
+            <button onclick="toggleLanguage()" class="bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all">
+                <i class="fa-solid fa-language text-sm"></i>
+                <span id="lang-btn-label">മലയാളം</span>
+            </button>
+
+            <!-- Export / Import -->
+            <button onclick="exportJSON()" title="Export JSON Project" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-2 rounded-lg text-xs flex items-center justify-center transition-all border border-slate-700">
+                <i class="fa-solid fa-download"></i>
+            </button>
+            <label title="Import JSON Project" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-2 rounded-lg text-xs flex items-center justify-center transition-all border border-slate-700 cursor-pointer">
+                <i class="fa-solid fa-upload"></i>
+                <input type="file" id="import-json-file" accept=".json" onchange="importJSON(event)" class="hidden">
+            </label>
+
+            <!-- Reset -->
+            <button onclick="resetTemplate()" title="Reset to Default" class="bg-slate-800 hover:bg-rose-900/50 text-slate-300 hover:text-rose-300 p-2 rounded-lg text-xs flex items-center justify-center transition-all border border-slate-700">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+
+            <!-- Print -->
+            <button onclick="triggerPrint()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all shadow-md">
+                <i class="fa-solid fa-print"></i>
+                <span>Print / PDF</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile View Selector Bar -->
+    <div class="lg:hidden no-print bg-slate-900 border-b border-slate-800 px-3 py-2 flex items-center justify-between text-xs">
+        <span class="text-slate-400 font-medium">View Mode:</span>
+        <div class="flex items-center gap-1">
+            <button onclick="switchViewMode('grid')" id="btn-mode-grid-mob" class="px-2 py-1 rounded bg-slate-800 text-slate-300">Grid</button>
+            <button onclick="switchViewMode('reader')" id="btn-mode-reader-mob" class="px-2 py-1 rounded bg-rose-600 text-white font-semibold">Reader</button>
+            <button onclick="switchViewMode('booklet')" id="btn-mode-booklet-mob" class="px-2 py-1 rounded bg-slate-800 text-slate-300">Booklet Fold</button>
+        </div>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <div class="flex-1 flex overflow-hidden relative">
+
+        <!-- Sidebar Inspector Panel -->
+        <aside id="inspector-sidebar" class="no-print w-80 bg-slate-900 border-r border-slate-800 flex flex-col z-20 shrink-0 transition-all duration-300">
+            <div class="p-3 border-b border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2 text-rose-400 font-semibold text-xs uppercase tracking-wider">
+                    <i class="fa-solid fa-sliders"></i>
+                    <span>Design Inspector</span>
+                </div>
+                <button onclick="toggleSidebar()" class="text-slate-400 hover:text-white p-1 text-sm">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Inspector Tabs Scroll Container -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-6 text-xs text-slate-300">
+
+                <!-- 1. Theme Preset Selector -->
+                <div class="space-y-2">
+                    <label class="font-semibold text-slate-200 block flex items-center gap-1.5">
+                        <i class="fa-solid fa-palette text-rose-400"></i> Palette Themes
+                    </label>
+                    <div class="grid grid-cols-5 gap-1.5">
+                        <button onclick="setTheme('classic')" title="Classic White" class="h-8 rounded border border-slate-700 bg-white flex items-center justify-center text-slate-900 font-bold text-[10px]">A</button>
+                        <button onclick="setTheme('autumn')" title="Warm Autumn" class="h-8 rounded border border-amber-800 bg-amber-50 flex items-center justify-center text-amber-900 font-bold text-[10px]">B</button>
+                        <button onclick="setTheme('pastel')" title="Pastel Rose" class="h-8 rounded border border-pink-700 bg-pink-50 flex items-center justify-center text-pink-900 font-bold text-[10px]">C</button>
+                        <button onclick="setTheme('ocean')" title="Ocean Blue" class="h-8 rounded border border-sky-700 bg-sky-50 flex items-center justify-center text-sky-900 font-bold text-[10px]">D</button>
+                        <button onclick="setTheme('noir')" title="Dark Noir" class="h-8 rounded border border-slate-600 bg-slate-900 flex items-center justify-center text-slate-100 font-bold text-[10px]">E</button>
+                    </div>
+                </div>
+
+                <!-- 2. Typography Settings -->
+                <div class="space-y-3 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                    <label class="font-semibold text-slate-200 block flex items-center gap-1.5">
+                        <i class="fa-solid fa-font text-amber-400"></i> Typography & Styling
+                    </label>
+
+                    <div>
+                        <span class="text-slate-400 block mb-1 text-[11px]">Primary Title Font</span>
+                        <select id="font-family-select" onchange="updateGlobalFont(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-slate-200 focus:outline-none focus:border-rose-500">
+                            <option value="font-playfair">Playfair Display (Serif)</option>
+                            <option value="font-cinzel">Cinzel (Classic)</option>
+                            <option value="font-lora">Lora (Literary)</option>
+                            <option value="font-dancing">Dancing Script (Cursive)</option>
+                            <option value="font-anek">Anek Malayalam (Modern)</option>
+                            <option value="font-notoserif">Noto Serif Malayalam</option>
+                            <option value="font-manjari">Manjari Malayalam</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-slate-400 mb-1 text-[11px]">
+                            <span>Title Size Scale</span>
+                            <span id="title-scale-val">100%</span>
+                        </div>
+                        <input type="range" min="70" max="150" value="100" id="title-scale-slider" oninput="updateTitleScale(this.value)" class="w-full accent-rose-500 bg-slate-800 rounded">
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button onclick="setTextAlign('left')" class="flex-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 p-1.5 rounded text-center"><i class="fa-solid fa-align-left"></i></button>
+                        <button onclick="setTextAlign('center')" class="flex-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 p-1.5 rounded text-center"><i class="fa-solid fa-align-center"></i></button>
+                        <button onclick="setTextAlign('right')" class="flex-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 p-1.5 rounded text-center"><i class="fa-solid fa-align-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- 3. Photo Filters & Adjustments -->
+                <div class="space-y-3 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                    <label class="font-semibold text-slate-200 block flex items-center gap-1.5">
+                        <i class="fa-solid fa-image text-emerald-400"></i> Photo Adjustments
+                    </label>
+                    <p class="text-[11px] text-slate-400">Click any image in the magazine pages to adjust photo style.</p>
+
+                    <div>
+                        <span class="text-slate-400 block mb-1 text-[11px]">Filter Preset</span>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="applyPhotoFilter('none')" class="bg-slate-900 border border-slate-700 py-1 rounded text-[10px]">Normal</button>
+                            <button onclick="applyPhotoFilter('grayscale(100%)')" class="bg-slate-900 border border-slate-700 py-1 rounded text-[10px]">B&W</button>
+                            <button onclick="applyPhotoFilter('sepia(80%)')" class="bg-slate-900 border border-slate-700 py-1 rounded text-[10px]">Sepia</button>
+                            <button onclick="applyPhotoFilter('contrast(130%) brightness(105%)')" class="bg-slate-900 border border-slate-700 py-1 rounded text-[10px]">Vivid</button>
+                            <button onclick="applyPhotoFilter('sepia(30%) hue-rotate(-10deg) saturate(140%)')" class="bg-slate-900 border border-slate-700 py-1 rounded text-[10px]">Vintage</button>
+                            <button onclick="applyPhotoFilter('brightness(110%) saturate(80%)')" class="bg-slate-900 border border-slate-700 py-1 rounded text-[10px]">Soft</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between text-slate-400 mb-1 text-[11px]">
+                            <span>Polaroid Tilt Angle</span>
+                            <span id="tilt-val">0°</span>
+                        </div>
+                        <input type="range" min="-12" max="12" value="0" oninput="updateActiveImageTilt(this.value)" class="w-full accent-emerald-500 bg-slate-800 rounded">
+                    </div>
+                </div>
+
+                <!-- 4. Decorative Accessories Toggles -->
+                <div class="space-y-2.5 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                    <label class="font-semibold text-slate-200 block flex items-center gap-1.5">
+                        <i class="fa-solid fa-icons text-sky-400"></i> Decorative Accessories
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer">
+                        <span class="text-slate-300 text-[11px]">Sticker Badges</span>
+                        <input type="checkbox" checked onchange="toggleDecorativeElement('.badge-sticker', this.checked)" class="accent-rose-500 rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer">
+                        <span class="text-slate-300 text-[11px]">Washi Tape on Polaroids</span>
+                        <input type="checkbox" checked onchange="toggleDecorativeElement('.washi-tape', this.checked)" class="accent-rose-500 rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer">
+                        <span class="text-slate-300 text-[11px]">Speech Bubbles & Callouts</span>
+                        <input type="checkbox" checked onchange="toggleDecorativeElement('.speech-bubble', this.checked)" class="accent-rose-500 rounded">
+                    </label>
+
+                    <label class="flex items-center justify-between cursor-pointer">
+                        <span class="text-slate-300 text-[11px]">Ripped Paper Top Headers</span>
+                        <input type="checkbox" checked onchange="toggleDecorativeElement('.ripped-header', this.checked)" class="accent-rose-500 rounded">
+                    </label>
+                </div>
+
+                <!-- 5. Quick Page Jump List -->
+                <div class="space-y-2">
+                    <label class="font-semibold text-slate-200 block flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-lines text-slate-400"></i> Pages Jump
+                    </label>
+                    <div class="grid grid-cols-3 gap-1.5 text-center">
+                        <button onclick="jumpToPage(1)" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-[11px] text-slate-200">Pg 1 (Cover)</button>
+                        <button onclick="jumpToPage(2)" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-[11px] text-slate-200">Pg 2 (Intro)</button>
+                        <button onclick="jumpToPage(3)" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-[11px] text-slate-200">Pg 3 (Gallery)</button>
+                        <button onclick="jumpToPage(4)" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-[11px] text-slate-200">Pg 4 (Feature)</button>
+                        <button onclick="jumpToPage(5)" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-[11px] text-slate-200">Pg 5 (Collage)</button>
+                        <button onclick="jumpToPage(6)" class="bg-slate-800 hover:bg-slate-700 p-2 rounded text-[11px] text-slate-200">Pg 6 (Back)</button>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+        <!-- Toggle Sidebar Button (When hidden) -->
+        <button id="sidebar-reopen-btn" onclick="toggleSidebar()" class="no-print absolute left-2 top-3 z-20 bg-slate-900 border border-slate-700 text-slate-300 hover:text-white p-2 rounded-lg shadow-xl hidden">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <!-- Main Workspace Render View Area -->
+        <main class="flex-1 overflow-auto bg-slate-950 p-4 md:p-8 flex flex-col items-center relative" id="workspace-container">
+
+            <!-- VIEW MODE 1: MAGAZINE READER MODE (Sequential Reader) -->
+            <div id="view-reader-container" class="w-full max-w-6xl flex flex-col items-center justify-center my-auto transition-all">
+                
+                <!-- Spread Reader Navigation Bar -->
+                <div class="no-print flex items-center justify-between w-full max-w-4xl bg-slate-900/90 backdrop-blur border border-slate-800 p-3 rounded-2xl mb-6 shadow-xl">
+                    <button onclick="prevSpread()" class="bg-slate-800 hover:bg-rose-600 text-slate-200 hover:text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-chevron-left"></i>
+                        <span>Previous Spread</span>
+                    </button>
+
+                    <div class="text-center">
+                        <span id="reader-spread-indicator" class="text-xs font-bold text-slate-200 uppercase tracking-wide">
+                            Page 1 • Front Cover
+                        </span>
+                        <div class="flex items-center justify-center gap-1.5 mt-1" id="reader-dots">
+                            <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                            <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                            <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                            <span class="w-2 h-2 rounded-full bg-slate-700"></span>
+                        </div>
+                    </div>
+
+                    <button onclick="nextSpread()" class="bg-slate-800 hover:bg-rose-600 text-slate-200 hover:text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all">
+                        <span>Next Spread</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+
+                <!-- Spread Display Stage -->
+                <div id="reader-spread-stage" class="page-turn-enter flex justify-center items-center shadow-2xl rounded-lg overflow-hidden transition-all max-w-full">
+                    <!-- Dynamic rendering via JS based on current spread index -->
+                </div>
+
+                <p class="no-print text-xs text-slate-500 mt-4 flex items-center gap-1.5">
+                    <i class="fa-solid fa-lightbulb text-amber-400"></i>
+                    <span>Sequential Reader Mode: Page 1 solo, Pages 2 & 3 duo, Pages 4 & 5 duo, Page 6 solo. Click any text or image to edit!</span>
+                </p>
+            </div>
+
+            <!-- VIEW MODE 2: STUDIO GRID VIEW -->
+            <div id="view-grid-container" class="hidden w-full max-w-7xl flex flex-col items-center">
+                <div class="mb-6 text-center no-print">
+                    <h2 class="text-xl font-bold text-white font-playfair">Studio All Pages View</h2>
+                    <p class="text-xs text-slate-400 mt-1">Directly view and edit all 6 pages vertically in sequential order.</p>
+                </div>
+
+                <div id="grid-pages-wrapper" class="flex flex-wrap justify-center gap-8 w-full">
+                    <!-- Pages 1-6 rendered sequentially via JS -->
+                </div>
+            </div>
+
+            <!-- VIEW MODE 3: BOOKLET FOLD IMPOSITION MODE (Printer Order) -->
+            <div id="view-booklet-container" class="hidden w-full max-w-7xl flex flex-col items-center">
+                <div class="mb-6 text-center no-print bg-slate-900 border border-amber-500/30 p-4 rounded-2xl max-w-3xl">
+                    <div class="flex items-center justify-center gap-2 text-amber-400 font-bold text-sm mb-1">
+                        <i class="fa-solid fa-print"></i>
+                        <span>Booklet Signature Imposition Mode (Folding Order)</span>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        In this view, pages are arranged for printing double-sided on 3 physical A3/Double-A4 sheets. When folded down the spine fold line and stapled in the middle, they form a perfect 6-page booklet in exact numerical order!
+                    </p>
+                </div>
+
+                <div id="booklet-sheets-wrapper" class="space-y-12 flex flex-col items-center w-full">
+                    <!-- Sheet 1, Sheet 2, Sheet 3 rendered via JS -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- HIDDEN TEMPLATES FOR THE 6 A4 PAGES -->
+    <div class="hidden" id="page-templates-source">
+
+        <!-- PAGE 1: FRONT COVER -->
+        <div id="template-page-1" class="page-a4 flex flex-col justify-between p-8 text-slate-900 font-playfair relative">
+            <div class="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-rose-600 via-amber-500 to-rose-700"></div>
+
+            <!-- Top Header & Date -->
+            <div class="flex justify-between items-center text-xs tracking-widest font-sans uppercase border-b pb-3 border-slate-200">
+                <span contenteditable="true" class="font-bold text-rose-700">SPECIAL EDITION • 2026</span>
+                <span contenteditable="true" class="text-slate-500">VOL. 12 • ISSUE 04</span>
+            </div>
+
+            <!-- Title & Main Cover Headline -->
+            <div class="my-4 text-center">
+                <h1 contenteditable="true" class="mag-title text-6xl md:text-7xl font-extrabold tracking-tight text-slate-900 uppercase my-2">
+                    MOMENTS
+                </h1>
+                <p contenteditable="true" class="mag-subtitle text-sm font-sans tracking-widest text-slate-600 uppercase font-medium">
+                    സ്നേഹിതം • LIFE, LOVE & MEMORIES
+                </p>
+            </div>
+
+            <!-- Main Cover Photo Polaroid Frame -->
+            <div class="relative my-2 mx-auto w-full max-w-md bg-white p-3 shadow-xl rounded-sm border border-slate-200 transform -rotate-1 hover:rotate-0 transition-all cursor-pointer group" onclick="triggerImageUpload('cover-photo-1')">
+                <div class="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 z-10"></div>
+                <div class="aspect-[4/5] bg-slate-100 overflow-hidden relative">
+                    <img id="cover-photo-1" src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover transition-all" alt="Cover Photo">
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs font-sans transition-all">
+                        <i class="fa-solid fa-camera mr-1"></i> Change Photo
+                    </div>
+                </div>
+                <p contenteditable="true" class="text-center font-dancing text-lg mt-2 text-slate-700">
+                    Capturing timeless stories together
+                </p>
+
+                <!-- Sticker Badge -->
+                <div class="badge-sticker absolute -bottom-4 -right-4 bg-rose-600 text-white rounded-full w-16 h-16 flex items-center justify-center font-sans text-[10px] font-bold tracking-tighter uppercase transform rotate-12 shadow-lg border-2 border-white">
+                    <span class="text-center">EXCLUSIVE<br>COLLECTION</span>
+                </div>
+            </div>
+
+            <!-- Bottom Teasers & Lead Headings -->
+            <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200 font-sans">
+                <div>
+                    <span class="text-[10px] font-bold text-rose-600 uppercase tracking-wider block">FEATURE STORY</span>
+                    <h4 contenteditable="true" class="font-playfair font-bold text-sm text-slate-900">
+                        The Art of Celebrating Small Wins
+                    </h4>
+                    <p contenteditable="true" class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">
+                        ജീവിതത്തിലെ കൊച്ചു സന്തോഷങ്ങൾ നെഞ്ചിലേറ്റാം.
+                    </p>
+                </div>
+                <div>
+                    <span class="text-[10px] font-bold text-amber-600 uppercase tracking-wider block">SCRAPBOOK</span>
+                    <h4 contenteditable="true" class="font-playfair font-bold text-sm text-slate-900">
+                        Unforgettable Journeys
+                    </h4>
+                    <p contenteditable="true" class="text-[11px] text-slate-500 mt-0.5 line-clamp-2">
+                        ഓർമ്മകളുടെ വസന്തകാലത്തിലേക്ക് ഒരു യാത്ര.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Page Number -->
+            <div class="text-right text-[10px] font-sans text-slate-400">01</div>
+        </div>
+
+        <!-- PAGE 2: INSIDE SPREAD 1 LEFT - EDITOR'S NOTE -->
+        <div id="template-page-2" class="page-a4 flex flex-col justify-between p-8 text-slate-800 font-sans relative">
+            <div class="ripped-header absolute top-0 left-0 w-full h-8 bg-rose-900/10"></div>
+
+            <div class="flex justify-between items-center text-xs text-slate-400 border-b border-slate-200 pb-2">
+                <span>INSIDE SPREAD 1 • EDITORIAL</span>
+                <span class="font-playfair font-bold text-slate-700">MOMENTS</span>
+            </div>
+
+            <div class="my-auto space-y-4">
+                <div class="inline-block bg-rose-100 text-rose-800 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                    EDITOR'S NOTE • എഡിറ്റോറിയൽ
+                </div>
+
+                <h2 contenteditable="true" class="font-playfair font-bold text-2xl text-slate-900 leading-tight">
+                    Welcome to Our Creative Haven
+                </h2>
+
+                <div class="flex gap-4 items-center">
+                    <div class="w-1/2 bg-white p-2 border border-slate-200 shadow-md transform -rotate-2 cursor-pointer group" onclick="triggerImageUpload('editor-photo-2')">
+                        <div class="washi-tape absolute -top-2 left-4 w-16 h-4"></div>
+                        <div class="aspect-square bg-slate-100 overflow-hidden relative">
+                            <img id="editor-photo-2" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[10px]">Change Photo</div>
+                        </div>
+                    </div>
+                    <div class="w-1/2 space-y-2 text-xs text-slate-600 leading-relaxed">
+                        <p contenteditable="true">
+                            ഓരോ നിമിഷവും അമൂല്യമാണ്. ഈ മാസികയിലൂടെ നിങ്ങളുടെ പ്രിയപ്പെട്ട ഓർമ്മകളെ എന്നേക്കുമായി സൂക്ഷിക്കാം.
+                        </p>
+                        <p contenteditable="true">
+                            Life consists of a series of moments that weave together to form our unique story.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg">
+                    <p contenteditable="true" class="font-playfair italic text-xs text-amber-900">
+                        "Every photo tells a story that words sometimes fail to express."
+                    </p>
+                </div>
+
+                <p contenteditable="true" class="text-xs text-slate-600 leading-relaxed">
+                    നമ്മുടെ ചുറ്റുമുള്ള കൊച്ചു സന്തോഷങ്ങളെ തിരികെ കൊണ്ടുവരാനാണ് സ്നേഹിതം മാഗസിൻ ശ്രമിക്കുന്നത്. പേജുകൾ മറിച്ച് പുതിയ അനുഭവങ്ങളിലേക്ക് സ്വാഗതം.
+                </p>
+            </div>
+
+            <div class="flex justify-between items-center text-[10px] text-slate-400 pt-2 border-t border-slate-200">
+                <span>02</span>
+                <span>MOMENTS STUDIO</span>
+            </div>
+        </div>
+
+        <!-- PAGE 3: INSIDE SPREAD 1 RIGHT - PHOTO GALLERY -->
+        <div id="template-page-3" class="page-a4 flex flex-col justify-between p-8 text-slate-800 font-sans relative">
+            <div class="flex justify-between items-center text-xs text-slate-400 border-b border-slate-200 pb-2">
+                <span class="font-playfair font-bold text-slate-700">MOMENTS</span>
+                <span>INSIDE SPREAD 1 • GALLERY</span>
+            </div>
+
+            <div class="my-auto space-y-4">
+                <div class="text-center">
+                    <h3 contenteditable="true" class="font-playfair text-xl font-bold text-slate-900">
+                        MEMORIES & SMILES • ഓർമ്മച്ചെപ്പ്
+                    </h3>
+                    <p contenteditable="true" class="text-xs text-slate-500">A collection of cherished snapshots</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-2 border border-slate-200 shadow transform rotate-1 cursor-pointer group" onclick="triggerImageUpload('gallery-photo-3a')">
+                        <div class="aspect-square bg-slate-100 overflow-hidden relative">
+                            <img id="gallery-photo-3a" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover">
+                        </div>
+                        <p contenteditable="true" class="text-[10px] text-center font-dancing mt-1 text-slate-600">Joyful times</p>
+                    </div>
+
+                    <div class="bg-white p-2 border border-slate-200 shadow transform -rotate-2 cursor-pointer group" onclick="triggerImageUpload('gallery-photo-3b')">
+                        <div class="aspect-square bg-slate-100 overflow-hidden relative">
+                            <img id="gallery-photo-3b" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover">
+                        </div>
+                        <p contenteditable="true" class="text-[10px] text-center font-dancing mt-1 text-slate-600">Friendship forever</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-2 border border-slate-200 shadow cursor-pointer group" onclick="triggerImageUpload('gallery-photo-3c')">
+                    <div class="washi-tape absolute -top-2 left-1/3 w-20 h-4"></div>
+                    <div class="aspect-[16/9] bg-slate-100 overflow-hidden relative">
+                        <img id="gallery-photo-3c" src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover">
+                    </div>
+                    <p contenteditable="true" class="text-[11px] font-dancing text-center mt-1 text-slate-700">
+                        "The best path is the one shared with loved ones"
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-[10px] text-slate-400 pt-2 border-t border-slate-200">
+                <span>MOMENTS STUDIO</span>
+                <span>03</span>
+            </div>
+        </div>
+
+        <!-- PAGE 4: INSIDE SPREAD 2 LEFT - FEATURE ARTICLE -->
+        <div id="template-page-4" class="page-a4 flex flex-col justify-between p-8 text-slate-800 font-sans relative">
+            <div class="flex justify-between items-center text-xs text-slate-400 border-b border-slate-200 pb-2">
+                <span>INSIDE SPREAD 2 • FEATURE</span>
+                <span class="font-playfair font-bold text-slate-700">MOMENTS</span>
+            </div>
+
+            <div class="my-auto space-y-3">
+                <span class="text-[10px] font-bold text-rose-600 tracking-wider uppercase block">SPECIAL FEATURE STORY</span>
+                <h2 contenteditable="true" class="font-playfair font-bold text-2xl text-slate-900 leading-snug">
+                    Finding Beauty in Everyday Simplicity
+                </h2>
+                <h4 contenteditable="true" class="text-xs text-slate-500 font-medium italic">
+                    സാധാരണത്വത്തിലെ മനോഹാരിത കണ്ടെത്തൽ
+                </h4>
+
+                <!-- Speech Bubble Decorative Component -->
+                <div class="speech-bubble bg-rose-50 border border-rose-200 p-3 rounded-xl relative my-2 text-xs text-rose-900">
+                    <i class="fa-solid fa-quote-left text-rose-300 text-lg mr-1"></i>
+                    <span contenteditable="true">"Happiness is not out there; it is inside the moments we pause to appreciate."</span>
+                </div>
+
+                <div class="columns-2 gap-4 text-xs text-slate-600 leading-relaxed">
+                    <p contenteditable="true" class="first-letter:text-3xl first-letter:font-playfair first-letter:font-bold first-letter:text-rose-700 first-letter:float-left first-letter:mr-1">
+                        നഗരത്തിരക്കുകൾക്കിടയിലും നമ്മൾ മറന്നുപോകുന്ന ചില കൊച്ചു കാര്യങ്ങളുണ്ട്. ഒരു തണുത്ത രാവിലെയുടെ ശാന്തത, പ്രിയപ്പെട്ടവരുമൊത്തുള്ള ചായ കുടി, പഴയൊരു ഗാനം.
+                    </p>
+                    <p contenteditable="true">
+                        In the rush of modern life, we often overlook the quiet harmony surrounding us. Taking time to slow down allows our soul to catch up.
+                    </p>
+                </div>
+
+                <div class="w-full bg-slate-100 p-1 border border-slate-200 rounded cursor-pointer group" onclick="triggerImageUpload('article-photo-4')">
+                    <div class="aspect-[21/9] overflow-hidden relative">
+                        <img id="article-photo-4" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-[10px] text-slate-400 pt-2 border-t border-slate-200">
+                <span>04</span>
+                <span>MOMENTS STUDIO</span>
+            </div>
+        </div>
+
+        <!-- PAGE 5: INSIDE SPREAD 2 RIGHT - SCRAPBOOK COLLAGE -->
+        <div id="template-page-5" class="page-a4 flex flex-col justify-between p-8 text-slate-800 font-sans relative">
+            <div class="flex justify-between items-center text-xs text-slate-400 border-b border-slate-200 pb-2">
+                <span class="font-playfair font-bold text-slate-700">MOMENTS</span>
+                <span>INSIDE SPREAD 2 • SCRAPBOOK</span>
+            </div>
+
+            <div class="my-auto space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 contenteditable="true" class="font-playfair font-bold text-lg text-slate-900">
+                        SCRAPBOOK NOTES • ജീവിതത്താളുകൾ
+                    </h3>
+                    <span class="badge-sticker bg-amber-500 text-slate-900 font-bold text-[9px] px-2 py-0.5 rounded-full uppercase">Snapshots</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 items-center">
+                    <div class="bg-white p-2 border border-slate-200 shadow transform -rotate-3 cursor-pointer group" onclick="triggerImageUpload('scrapbook-photo-5a')">
+                        <div class="washi-tape absolute -top-2 left-3 w-14 h-4"></div>
+                        <div class="aspect-[3/4] bg-slate-100 overflow-hidden relative">
+                            <img id="scrapbook-photo-5a" src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover">
+                        </div>
+                        <p contenteditable="true" class="text-[10px] font-dancing text-center mt-1">Sweet laughter</p>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="bg-white p-2 border border-slate-200 shadow transform rotate-2 cursor-pointer group" onclick="triggerImageUpload('scrapbook-photo-5b')">
+                            <div class="aspect-square bg-slate-100 overflow-hidden relative">
+                                <img id="scrapbook-photo-5b" src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=600&auto=format&fit=crop" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <div class="bg-amber-100/70 p-2.5 rounded-lg border border-amber-200 text-xs text-amber-900">
+                            <p contenteditable="true" class="font-dancing text-sm">
+                                "ഓരോ യാത്രയും പുതിയ ചിന്തകൾ തരുന്നു."
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 text-white p-3 rounded-xl shadow-md text-xs space-y-1">
+                    <span class="text-rose-400 text-[10px] font-bold uppercase tracking-wider block">QUOTE OF THE MONTH</span>
+                    <p contenteditable="true" class="font-playfair italic">
+                        "In the end, we only regret the chances we didn't take and the moments we failed to capture."
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-[10px] text-slate-400 pt-2 border-t border-slate-200">
+                <span>MOMENTS STUDIO</span>
+                <span>05</span>
+            </div>
+        </div>
+
+        <!-- PAGE 6: BACK COVER -->
+        <div id="template-page-6" class="page-a4 flex flex-col justify-between p-8 text-slate-800 font-playfair relative bg-slate-900 text-slate-100">
+            <div class="absolute bottom-0 left-0 w-full h-3 bg-gradient-to-r from-rose-600 via-amber-500 to-rose-700"></div>
+
+            <div class="text-center border-b border-slate-800 pb-3">
+                <span contenteditable="true" class="text-xs font-sans tracking-widest text-slate-400 uppercase">MOMENTS STUDIO EDITION</span>
+            </div>
+
+            <div class="my-auto text-center space-y-6 max-w-sm mx-auto">
+                <div class="w-20 h-20 bg-rose-600 rounded-full mx-auto flex items-center justify-center text-white text-3xl shadow-xl">
+                    <i class="fa-solid fa-heart"></i>
+                </div>
+
+                <div>
+                    <h2 contenteditable="true" class="text-3xl font-bold tracking-tight text-white mb-2">
+                        വീണ്ടും കാണും വരെ
+                    </h2>
+                    <h3 contenteditable="true" class="text-lg text-rose-300 font-sans tracking-wide">
+                        UNTIL WE MEET AGAIN
+                    </h3>
+                </div>
+
+                <p contenteditable="true" class="text-xs font-sans text-slate-400 leading-relaxed">
+                    Thank you for browsing through our magazine. Keep creating, capturing, and sharing beautiful moments.
+                </p>
+
+                <!-- Fake Barcode -->
+                <div class="bg-white p-3 rounded max-w-[180px] mx-auto shadow-lg text-slate-900 font-sans">
+                    <div class="h-10 bg-slate-900 flex justify-between px-1 items-center">
+                        <div class="w-1 h-full bg-white"></div>
+                        <div class="w-2 h-full bg-white"></div>
+                        <div class="w-0.5 h-full bg-white"></div>
+                        <div class="w-1.5 h-full bg-white"></div>
+                        <div class="w-1 h-full bg-white"></div>
+                        <div class="w-3 h-full bg-white"></div>
+                        <div class="w-0.5 h-full bg-white"></div>
+                        <div class="w-2 h-full bg-white"></div>
+                    </div>
+                    <span class="text-[9px] block text-center mt-1 font-mono tracking-widest">978-0-123456-78-9</span>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-[10px] font-sans text-slate-500 border-t border-slate-800 pt-3">
+                <span>© 2026 MOMENTS STUDIO</span>
+                <span>06</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Hidden File Input for Image Uploads -->
+    <input type="file" id="global-image-uploader" accept="image/*" class="hidden" onchange="handleImageSelected(event)">
+
+    <script>
+        // State Management
+        let appState = {
+            viewMode: 'reader', // 'reader', 'grid', 'booklet'
+            currentSpread: 0,   // 0: Pg1, 1: Pg2+3, 2: Pg4+5, 3: Pg6
+            lang: 'en',         // 'en' or 'ml'
+            theme: 'classic',
+            titleFont: 'font-playfair',
+            titleScale: 100,
+            activeImageTargetId: null,
+            activeImageFilter: 'none',
+            activeImageTilt: 0,
+            customPhotos: {}    // Map photo IDs to base64/URLs
+        };
+
+        // Malayalam Preset Text Content
+        const malayalamPresets = {
+            "mag-title": "സ്നേഹിതം",
+            "mag-subtitle": "MOMENTS • ജീവിതവും ഓർമ്മകളും"
+        };
+
+        const englishPresets = {
+            "mag-title": "MOMENTS",
+            "mag-subtitle": "സ്നേഹിതം • LIFE, LOVE & MEMORIES"
+        };
+
+        window.onload = function() {
+            // Load saved state from LocalStorage if present
+            const saved = localStorage.getItem('moments_studio_state');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...appState, ...parsed };
+                } catch(e) { console.error("Could not parse saved state", e); }
+            }
+
+            renderCurrentView();
+            updateLanguageUI();
+        };
+
+        // Save State to LocalStorage
+        function saveState() {
+            try {
+                localStorage.setItem('moments_studio_state', JSON.stringify(appState));
+            } catch(e) { console.error("Storage limit reached", e); }
+        }
+
+        // Switch Active View Mode
+        function switchViewMode(mode) {
+            appState.viewMode = mode;
+            
+            // Update Top Bar Button Highlights
+            document.querySelectorAll('[id^="btn-mode-"]').forEach(btn => {
+                btn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all text-slate-400 hover:text-white";
+            });
+            const activeBtn = document.getElementById(`btn-mode-${mode}`);
+            if (activeBtn) {
+                activeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all bg-rose-600 text-white shadow-md";
+            }
+
+            // Hide all view containers
+            document.getElementById('view-reader-container').classList.add('hidden');
+            document.getElementById('view-grid-container').classList.add('hidden');
+            document.getElementById('view-booklet-container').classList.add('hidden');
+
+            // Render selected view
+            if (mode === 'reader') {
+                document.getElementById('view-reader-container').classList.remove('hidden');
+                renderReaderSpread();
+            } else if (mode === 'grid') {
+                document.getElementById('view-grid-container').classList.remove('hidden');
+                renderGridView();
+            } else if (mode === 'booklet') {
+                document.getElementById('view-booklet-container').classList.remove('hidden');
+                renderBookletView();
+            }
+
+            saveState();
+        }
+
+        // 1. MAGAZINE READER MODE (Sequential Spreads: Page 1 solo, Pg 2+3, Pg 4+5, Pg 6 solo)
+        function renderReaderSpread() {
+            const stage = document.getElementById('reader-spread-stage');
+            stage.innerHTML = '';
+
+            const p1 = getClonedPage(1);
+            const p2 = getClonedPage(2);
+            const p3 = getClonedPage(3);
+            const p4 = getClonedPage(4);
+            const p5 = getClonedPage(5);
+            const p6 = getClonedPage(6);
+
+            const spreadIdx = appState.currentSpread;
+
+            if (spreadIdx === 0) {
+                // Front Cover Alone
+                const wrapper = document.createElement('div');
+                wrapper.className = 'page-wrapper shadow-2xl rounded-sm overflow-hidden border border-slate-700';
+                wrapper.appendChild(p1);
+                stage.appendChild(wrapper);
+                document.getElementById('reader-spread-indicator').innerText = 'PAGE 1 • FRONT COVER';
+            } 
+            else if (spreadIdx === 1) {
+                // Inside Spread 1: Page 2 (Left) + Page 3 (Right)
+                const duoWrapper = document.createElement('div');
+                duoWrapper.className = 'flex flex-row shadow-2xl rounded-sm overflow-hidden border border-slate-700 bg-slate-900';
+                
+                p2.classList.add('spine-shadow-left');
+                p3.classList.add('spine-shadow-right');
+
+                duoWrapper.appendChild(p2);
+                duoWrapper.appendChild(p3);
+                stage.appendChild(duoWrapper);
+                document.getElementById('reader-spread-indicator').innerText = 'PAGES 2 & 3 • INSIDE SPREAD 1';
+            } 
+            else if (spreadIdx === 2) {
+                // Inside Spread 2: Page 4 (Left) + Page 5 (Right)
+                const duoWrapper = document.createElement('div');
+                duoWrapper.className = 'flex flex-row shadow-2xl rounded-sm overflow-hidden border border-slate-700 bg-slate-900';
+                
+                p4.classList.add('spine-shadow-left');
+                p5.classList.add('spine-shadow-right');
+
+                duoWrapper.appendChild(p4);
+                duoWrapper.appendChild(p5);
+                stage.appendChild(duoWrapper);
+                document.getElementById('reader-spread-indicator').innerText = 'PAGES 4 & 5 • INSIDE SPREAD 2';
+            } 
+            else if (spreadIdx === 3) {
+                // Back Cover Alone
+                const wrapper = document.createElement('div');
+                wrapper.className = 'page-wrapper shadow-2xl rounded-sm overflow-hidden border border-slate-700';
+                wrapper.appendChild(p6);
+                stage.appendChild(wrapper);
+                document.getElementById('reader-spread-indicator').innerText = 'PAGE 6 • BACK COVER';
+            }
+
+            // Update Nav Dots
+            const dots = document.getElementById('reader-dots');
+            dots.innerHTML = '';
+            for (let i = 0; i < 4; i++) {
+                const dot = document.createElement('span');
+                dot.className = i === spreadIdx ? 'w-3 h-3 rounded-full bg-rose-500 transition-all' : 'w-2 h-2 rounded-full bg-slate-700 hover:bg-slate-500 cursor-pointer transition-all';
+                dot.onclick = () => { appState.currentSpread = i; renderReaderSpread(); };
+                dots.appendChild(dot);
+            }
+        }
+
+        function prevSpread() {
+            if (appState.currentSpread > 0) {
+                appState.currentSpread--;
+                renderReaderSpread();
+            }
+        }
+
+        function nextSpread() {
+            if (appState.currentSpread < 3) {
+                appState.currentSpread++;
+                renderReaderSpread();
+            }
+        }
+
+        // 2. STUDIO GRID VIEW (All 6 Pages vertically)
+        function renderGridView() {
+            const wrapper = document.getElementById('grid-pages-wrapper');
+            wrapper.innerHTML = '';
+
+            for (let i = 1; i <= 6; i++) {
+                const pageContainer = document.createElement('div');
+                pageContainer.className = 'flex flex-col items-center space-y-2';
+
+                const label = document.createElement('div');
+                label.className = 'text-xs font-bold text-slate-400 bg-slate-900 px-3 py-1 rounded-full border border-slate-800';
+                label.innerText = `Page 0${i}`;
+
+                const page = getClonedPage(i);
+                pageContainer.appendChild(label);
+                pageContainer.appendChild(page);
+
+                wrapper.appendChild(pageContainer);
+            }
+        }
+
+        // 3. BOOKLET FOLD IMPOSITION MODE (Page 6 | Page 1, Page 2 | Page 5, Page 4 | Page 3)
+        function renderBookletView() {
+            const container = document.getElementById('booklet-sheets-wrapper');
+            container.innerHTML = '';
+
+            // Sheet configurations for 6-page booklet signature folding
+            const sheets = [
+                { title: 'Sheet 1 • Outer Cover Spread', left: 6, right: 1, note: 'Outer Sheet (Back Cover | Front Cover)' },
+                { title: 'Sheet 2 • Outer Inside Spread', left: 2, right: 5, note: 'Outer Inside Sheet (Inside Cover | 2nd-to-last)' },
+                { title: 'Sheet 3 • Center Spread', left: 4, right: 3, note: 'Inner Center Sheet (Page 4 | Page 3)' }
+            ];
+
+            sheets.forEach((s, idx) => {
+                const sheetDiv = document.createElement('div');
+                sheetDiv.className = 'booklet-sheet flex flex-col items-center space-y-2 max-w-full';
+
+                const header = document.createElement('div');
+                header.className = 'no-print text-xs font-semibold text-amber-300 bg-slate-900/80 px-4 py-1.5 rounded-xl border border-amber-500/20 flex items-center gap-2';
+                header.innerHTML = `<i class="fa-solid fa-layer-group"></i> <span>${s.title}</span> <span class="text-slate-400">(${s.note})</span>`;
+
+                const spreadPair = document.createElement('div');
+                spreadPair.className = 'flex flex-row shadow-2xl rounded border-2 border-slate-700 bg-slate-900 relative overflow-hidden';
+
+                const leftPage = getClonedPage(s.left);
+                const rightPage = getClonedPage(s.right);
+
+                // Add Spine Crease Visual Marker down the center
+                const spineLine = document.createElement('div');
+                spineLine.className = 'no-print absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-8 pointer-events-none z-10 flex flex-col justify-between items-center py-4';
+                spineLine.innerHTML = `
+                    <div class="h-full border-r-2 border-dashed border-rose-500/50"></div>
+                    <span class="bg-rose-900/90 text-rose-200 text-[9px] font-bold px-2 py-0.5 rounded shadow my-1 uppercase">Fold Spine</span>
+                    <div class="h-full border-r-2 border-dashed border-rose-500/50"></div>
+                `;
+
+                leftPage.classList.add('spine-shadow-left');
+                rightPage.classList.add('spine-shadow-right');
+
+                spreadPair.appendChild(leftPage);
+                spreadPair.appendChild(spineLine);
+                spreadPair.appendChild(rightPage);
+
+                sheetDiv.appendChild(header);
+                sheetDiv.appendChild(spreadPair);
+
+                container.appendChild(sheetDiv);
+            });
+        }
+
+        // Utility to clone page template and re-attach custom images & interactive handlers
+        function getClonedPage(pageNum) {
+            const src = document.getElementById(`template-page-${pageNum}`);
+            if (!src) return document.createElement('div');
+
+            const clone = src.cloneNode(true);
+            clone.removeAttribute('id');
+
+            // Apply custom theme classes
+            clone.classList.add(`theme-${appState.theme}`);
+
+            // Apply custom photo uploads stored in state
+            clone.querySelectorAll('img').forEach(img => {
+                if (appState.customPhotos[img.id]) {
+                    img.src = appState.customPhotos[img.id];
+                }
+                if (appState.activeImageFilter && appState.activeImageFilter !== 'none') {
+                    img.style.filter = appState.activeImageFilter;
+                }
+            });
+
+            // Re-apply title scale
+            clone.querySelectorAll('.mag-title').forEach(t => {
+                t.style.fontSize = `${appState.titleScale * 0.05}rem`;
+            });
+
+            // Re-apply title font
+            clone.querySelectorAll('.mag-title').forEach(t => {
+                t.classList.add(appState.titleFont);
+            });
+
+            return clone;
+        }
+
+        function renderCurrentView() {
+            switchViewMode(appState.viewMode);
+        }
+
+        function jumpToPage(pageNum) {
+            if (pageNum === 1) appState.currentSpread = 0;
+            else if (pageNum === 2 || pageNum === 3) appState.currentSpread = 1;
+            else if (pageNum === 4 || pageNum === 5) appState.currentSpread = 2;
+            else if (pageNum === 6) appState.currentSpread = 3;
+
+            switchViewMode('reader');
+        }
+
+        // Image Upload Trigger
+        function triggerImageUpload(targetImgId) {
+            appState.activeImageTargetId = targetImgId;
+            document.getElementById('global-image-uploader').click();
+        }
+
+        function handleImageSelected(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgDataUrl = e.target.result;
+                if (appState.activeImageTargetId) {
+                    appState.customPhotos[appState.activeImageTargetId] = imgDataUrl;
+                    saveState();
+                    renderCurrentView();
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Photo Filters
+        function applyPhotoFilter(filterCss) {
+            appState.activeImageFilter = filterCss;
+            saveState();
+            renderCurrentView();
+        }
+
+        function updateActiveImageTilt(angleDeg) {
+            document.getElementById('tilt-val').innerText = `${angleDeg}°`;
+            // Apply rotation to active photo polaroid frames
+            document.querySelectorAll('.page-a4 .aspect-square, .page-a4 .aspect-\\[4\\/5\\]').forEach(frame => {
+                frame.style.transform = `rotate(${angleDeg}deg)`;
+            });
+        }
+
+        // Theme Setter
+        function setTheme(themeName) {
+            appState.theme = themeName;
+            saveState();
+            renderCurrentView();
+        }
+
+        // Font & Typography Updates
+        function updateGlobalFont(fontClass) {
+            appState.titleFont = fontClass;
+            saveState();
+            renderCurrentView();
+        }
+
+        function updateTitleScale(val) {
+            appState.titleScale = val;
+            document.getElementById('title-scale-val').innerText = `${val}%`;
+            saveState();
+            renderCurrentView();
+        }
+
+        function setTextAlign(align) {
+            document.querySelectorAll('.page-a4 [contenteditable="true"]').forEach(el => {
+                el.style.textAlign = align;
+            });
+        }
+
+        // Toggle Accessories (Badges, Tape, Speech Bubbles)
+        function toggleDecorativeElement(selector, visible) {
+            document.querySelectorAll(selector).forEach(el => {
+                el.style.display = visible ? '' : 'none';
+            });
+        }
+
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('inspector-sidebar');
+            const btn = document.getElementById('sidebar-reopen-btn');
+            if (sidebar.classList.contains('-ml-80')) {
+                sidebar.classList.remove('-ml-80');
+                btn.classList.add('hidden');
+            } else {
+                sidebar.classList.add('-ml-80');
+                btn.classList.remove('hidden');
+            }
+        }
+
+        // Dual Language Toggle (English <-> Malayalam)
+        function toggleLanguage() {
+            appState.lang = appState.lang === 'en' ? 'ml' : 'en';
+            updateLanguageUI();
+            saveState();
+        }
+
+        function updateLanguageUI() {
+            const btnLabel = document.getElementById('lang-btn-label');
+            const presets = appState.lang === 'ml' ? malayalamPresets : englishPresets;
+
+            if (appState.lang === 'ml') {
+                btnLabel.innerText = "English";
+                document.getElementById('app-title-text').innerText = "സ്നേഹിതം";
+            } else {
+                btnLabel.innerText = "മലയാളം";
+                document.getElementById('app-title-text').innerText = "MOMENTS";
+            }
+
+            // Update main title & subtitle in page templates
+            Object.keys(presets).forEach(className => {
+                document.querySelectorAll(`.${className}`).forEach(el => {
+                    el.innerText = presets[className];
+                });
+            });
+
+            renderCurrentView();
+        }
+
+        // Export JSON Project State
+        function exportJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `Moments_Magazine_Project_${new Date().toISOString().slice(0,10)}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        // Import JSON Project
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    appState = { ...appState, ...imported };
+                    saveState();
+                    renderCurrentView();
+                    updateLanguageUI();
+                } catch(err) {
+                    alert("Invalid JSON magazine project file.");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Reset Template
+        function resetTemplate() {
+            if (confirm("Reset magazine design to default template settings?")) {
+                localStorage.removeItem('moments_studio_state');
+                location.reload();
+            }
+        }
+
+        // Trigger Print / Export to PDF
+        function triggerPrint() {
+            window.print();
+        }
+    </script>
+</body>
+</html>
